@@ -1,0 +1,7 @@
+.idea
+.vscode
+
+frontend/dist
+frontend/node_modules
+
+api/target

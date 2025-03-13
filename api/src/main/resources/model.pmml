@@ -1,0 +1,415 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<PMML xmlns="http://www.dmg.org/PMML-4_4" version="4.4.1">
+    <Header copyright="Copyright (c) 2021 Software AG" description="Default description">
+        <Application name="Nyoka" version="5.5.0"/>
+        <Timestamp>2024-01-18 21:41:46.306717</Timestamp>
+    </Header>
+    <DataDictionary numberOfFields="2">
+        <DataField name="text" optype="categorical" dataType="string"/>
+        <DataField name="['private' 'work']" optype="categorical" dataType="integer">
+            <Value value="0"/>
+            <Value value="1"/>
+        </DataField>
+    </DataDictionary>
+    <TransformationDictionary>
+        <DerivedField name="lowercase(text)" optype="categorical" dataType="string">
+            <Apply function="lowercase">
+                <FieldRef field="text"/>
+            </Apply>
+        </DerivedField>
+        <DerivedField name="tfidf@[text](annual)" optype="continuous" dataType="double">
+            <Apply function="*">
+                <Constant>3.9016713131500982</Constant>
+                <TextIndex textField="lowercase(text)">
+                    <Extension value="budget"/>
+                    <Constant>annual</Constant>
+                </TextIndex>
+            </Apply>
+        </DerivedField>
+        <DerivedField name="tfidf@[text](appointment)" optype="continuous" dataType="double">
+            <Apply function="*">
+                <Constant>4.2201250442686327</Constant>
+                <TextIndex textField="lowercase(text)">
+                    <Extension value="review"/>
+                    <Constant>appointment</Constant>
+                </TextIndex>
+            </Apply>
+        </DerivedField>
+        <DerivedField name="tfidf@[text](birthday)" optype="continuous" dataType="double">
+            <Apply function="*">
+                <Constant>4.1595004224521972</Constant>
+                <TextIndex textField="lowercase(text)">
+                    <Extension value="book"/>
+                    <Constant>birthday</Constant>
+                </TextIndex>
+            </Apply>
+        </DerivedField>
+        <DerivedField name="tfidf@[text](book)" optype="continuous" dataType="double">
+            <Apply function="*">
+                <Constant>3.8791984572980396</Constant>
+                <TextIndex textField="lowercase(text)">
+                    <Extension value="club"/>
+                    <Constant>book</Constant>
+                </TextIndex>
+            </Apply>
+        </DerivedField>
+        <DerivedField name="tfidf@[text](budget)" optype="continuous" dataType="double">
+            <Apply function="*">
+                <Constant>4.1023420086122488</Constant>
+                <TextIndex textField="lowercase(text)">
+                    <Extension value="meeting"/>
+                    <Constant>budget</Constant>
+                </TextIndex>
+            </Apply>
+        </DerivedField>
+        <DerivedField name="tfidf@[text](car)" optype="continuous" dataType="double">
+            <Apply function="*">
+                <Constant>3.6083235031626399</Constant>
+                <TextIndex textField="lowercase(text)">
+                    <Extension value="product"/>
+                    <Constant>car</Constant>
+                </TextIndex>
+            </Apply>
+        </DerivedField>
+        <DerivedField name="tfidf@[text](cleaning)" optype="continuous" dataType="double">
+            <Apply function="*">
+                <Constant>4.1305128855789457</Constant>
+                <TextIndex textField="lowercase(text)">
+                    <Extension value="launch"/>
+                    <Constant>cleaning</Constant>
+                </TextIndex>
+            </Apply>
+        </DerivedField>
+        <DerivedField name="tfidf@[text](client)" optype="continuous" dataType="double">
+            <Apply function="*">
+                <Constant>4.0482747873419740</Constant>
+                <TextIndex textField="lowercase(text)">
+                    <Extension value="planning"/>
+                    <Constant>client</Constant>
+                </TextIndex>
+            </Apply>
+        </DerivedField>
+        <DerivedField name="tfidf@[text](club)" optype="continuous" dataType="double">
+            <Apply function="*">
+                <Constant>3.8791984572980396</Constant>
+                <TextIndex textField="lowercase(text)">
+                    <Extension value="car"/>
+                    <Constant>club</Constant>
+                </TextIndex>
+            </Apply>
+        </DerivedField>
+        <DerivedField name="tfidf@[text](deadline)" optype="continuous" dataType="double">
+            <Apply function="*">
+                <Constant>4.3536564368931554</Constant>
+                <TextIndex textField="lowercase(text)">
+                    <Extension value="maintenance"/>
+                    <Constant>deadline</Constant>
+                </TextIndex>
+            </Apply>
+        </DerivedField>
+        <DerivedField name="tfidf@[text](dentist)" optype="continuous" dataType="double">
+            <Apply function="*">
+                <Constant>4.2201250442686327</Constant>
+                <TextIndex textField="lowercase(text)">
+                    <Extension value="network"/>
+                    <Constant>dentist</Constant>
+                </TextIndex>
+            </Apply>
+        </DerivedField>
+        <DerivedField name="tfidf@[text](dinner)" optype="continuous" dataType="double">
+            <Apply function="*">
+                <Constant>4.1893533856018790</Constant>
+                <TextIndex textField="lowercase(text)">
+                    <Extension value="team"/>
+                    <Constant>dinner</Constant>
+                </TextIndex>
+            </Apply>
+        </DerivedField>
+        <DerivedField name="tfidf@[text](family)" optype="continuous" dataType="double">
+            <Apply function="*">
+                <Constant>4.1893533856018790</Constant>
+                <TextIndex textField="lowercase(text)">
+                    <Extension value="project"/>
+                    <Constant>family</Constant>
+                </TextIndex>
+            </Apply>
+        </DerivedField>
+        <DerivedField name="tfidf@[text](gardening)" optype="continuous" dataType="double">
+            <Apply function="*">
+                <Constant>3.9969814929544230</Constant>
+                <TextIndex textField="lowercase(text)">
+                    <Extension value="deadline"/>
+                    <Constant>gardening</Constant>
+                </TextIndex>
+            </Apply>
+        </DerivedField>
+        <DerivedField name="tfidf@[text](getaway)" optype="continuous" dataType="double">
+            <Apply function="*">
+                <Constant>3.7346172284869317</Constant>
+                <TextIndex textField="lowercase(text)">
+                    <Extension value="sales"/>
+                    <Constant>getaway</Constant>
+                </TextIndex>
+            </Apply>
+        </DerivedField>
+        <DerivedField name="tfidf@[text](grocery)" optype="continuous" dataType="double">
+            <Apply function="*">
+                <Constant>3.9481913287849908</Constant>
+                <TextIndex textField="lowercase(text)">
+                    <Extension value="annual"/>
+                    <Constant>grocery</Constant>
+                </TextIndex>
+            </Apply>
+        </DerivedField>
+        <DerivedField name="tfidf@[text](gym)" optype="continuous" dataType="double">
+            <Apply function="*">
+                <Constant>4.0482747873419740</Constant>
+                <TextIndex textField="lowercase(text)">
+                    <Extension value="report"/>
+                    <Constant>gym</Constant>
+                </TextIndex>
+            </Apply>
+        </DerivedField>
+        <DerivedField name="tfidf@[text](house)" optype="continuous" dataType="double">
+            <Apply function="*">
+                <Constant>4.1305128855789457</Constant>
+                <TextIndex textField="lowercase(text)">
+                    <Extension value="preparation"/>
+                    <Constant>house</Constant>
+                </TextIndex>
+            </Apply>
+        </DerivedField>
+        <DerivedField name="tfidf@[text](launch)" optype="continuous" dataType="double">
+            <Apply function="*">
+                <Constant>4.0482747873419740</Constant>
+                <TextIndex textField="lowercase(text)">
+                    <Extension value="dentist"/>
+                    <Constant>launch</Constant>
+                </TextIndex>
+            </Apply>
+        </DerivedField>
+        <DerivedField name="tfidf@[text](maintenance)" optype="continuous" dataType="double">
+            <Apply function="*">
+                <Constant>3.0037297199441397</Constant>
+                <TextIndex textField="lowercase(text)">
+                    <Extension value="appointment"/>
+                    <Constant>maintenance</Constant>
+                </TextIndex>
+            </Apply>
+        </DerivedField>
+        <DerivedField name="tfidf@[text](marketing)" optype="continuous" dataType="double">
+            <Apply function="*">
+                <Constant>4.1305128855789457</Constant>
+                <TextIndex textField="lowercase(text)">
+                    <Extension value="gardening"/>
+                    <Constant>marketing</Constant>
+                </TextIndex>
+            </Apply>
+        </DerivedField>
+        <DerivedField name="tfidf@[text](meeting)" optype="continuous" dataType="double">
+            <Apply function="*">
+                <Constant>2.8736765916959417</Constant>
+                <TextIndex textField="lowercase(text)">
+                    <Extension value="house"/>
+                    <Constant>meeting</Constant>
+                </TextIndex>
+            </Apply>
+        </DerivedField>
+        <DerivedField name="tfidf@[text](network)" optype="continuous" dataType="double">
+            <Apply function="*">
+                <Constant>3.7738379416402132</Constant>
+                <TextIndex textField="lowercase(text)">
+                    <Extension value="cleaning"/>
+                    <Constant>network</Constant>
+                </TextIndex>
+            </Apply>
+        </DerivedField>
+        <DerivedField name="tfidf@[text](party)" optype="continuous" dataType="double">
+            <Apply function="*">
+                <Constant>4.1595004224521972</Constant>
+                <TextIndex textField="lowercase(text)">
+                    <Extension value="family"/>
+                    <Constant>party</Constant>
+                </TextIndex>
+            </Apply>
+        </DerivedField>
+        <DerivedField name="tfidf@[text](performance)" optype="continuous" dataType="double">
+            <Apply function="*">
+                <Constant>3.8357133453583008</Constant>
+                <TextIndex textField="lowercase(text)">
+                    <Extension value="dinner"/>
+                    <Constant>performance</Constant>
+                </TextIndex>
+            </Apply>
+        </DerivedField>
+        <DerivedField name="tfidf@[text](planning)" optype="continuous" dataType="double">
+            <Apply function="*">
+                <Constant>2.8818399023351029</Constant>
+                <TextIndex textField="lowercase(text)">
+                    <Extension value="performance"/>
+                    <Constant>planning</Constant>
+                </TextIndex>
+            </Apply>
+        </DerivedField>
+        <DerivedField name="tfidf@[text](preparation)" optype="continuous" dataType="double">
+            <Apply function="*">
+                <Constant>3.9016713131500982</Constant>
+                <TextIndex textField="lowercase(text)">
+                    <Extension value="birthday"/>
+                    <Constant>preparation</Constant>
+                </TextIndex>
+            </Apply>
+        </DerivedField>
+        <DerivedField name="tfidf@[text](presentation)" optype="continuous" dataType="double">
+            <Apply function="*">
+                <Constant>4.0482747873419740</Constant>
+                <TextIndex textField="lowercase(text)">
+                    <Extension value="party"/>
+                    <Constant>presentation</Constant>
+                </TextIndex>
+            </Apply>
+        </DerivedField>
+        <DerivedField name="tfidf@[text](product)" optype="continuous" dataType="double">
+            <Apply function="*">
+                <Constant>4.0482747873419740</Constant>
+                <TextIndex textField="lowercase(text)">
+                    <Extension value="weekend"/>
+                    <Constant>product</Constant>
+                </TextIndex>
+            </Apply>
+        </DerivedField>
+        <DerivedField name="tfidf@[text](project)" optype="continuous" dataType="double">
+            <Apply function="*">
+                <Constant>4.3536564368931554</Constant>
+                <TextIndex textField="lowercase(text)">
+                    <Extension value="getaway"/>
+                    <Constant>project</Constant>
+                </TextIndex>
+            </Apply>
+        </DerivedField>
+        <DerivedField name="tfidf@[text](report)" optype="continuous" dataType="double">
+            <Apply function="*">
+                <Constant>3.9016713131500982</Constant>
+                <TextIndex textField="lowercase(text)">
+                    <Extension value="gym"/>
+                    <Constant>report</Constant>
+                </TextIndex>
+            </Apply>
+        </DerivedField>
+        <DerivedField name="tfidf@[text](review)" optype="continuous" dataType="double">
+            <Apply function="*">
+                <Constant>3.2791416998041059</Constant>
+                <TextIndex textField="lowercase(text)">
+                    <Extension value="session"/>
+                    <Constant>review</Constant>
+                </TextIndex>
+            </Apply>
+        </DerivedField>
+        <DerivedField name="tfidf@[text](sales)" optype="continuous" dataType="double">
+            <Apply function="*">
+                <Constant>3.7940406489577327</Constant>
+                <TextIndex textField="lowercase(text)">
+                    <Extension value="marketing"/>
+                    <Constant>sales</Constant>
+                </TextIndex>
+            </Apply>
+        </DerivedField>
+        <DerivedField name="tfidf@[text](session)" optype="continuous" dataType="double">
+            <Apply function="*">
+                <Constant>4.0482747873419740</Constant>
+                <TextIndex textField="lowercase(text)">
+                    <Extension value="strategy"/>
+                    <Constant>session</Constant>
+                </TextIndex>
+            </Apply>
+        </DerivedField>
+        <DerivedField name="tfidf@[text](shopping)" optype="continuous" dataType="double">
+            <Apply function="*">
+                <Constant>3.9481913287849908</Constant>
+                <TextIndex textField="lowercase(text)">
+                    <Extension value="grocery"/>
+                    <Constant>shopping</Constant>
+                </TextIndex>
+            </Apply>
+        </DerivedField>
+        <DerivedField name="tfidf@[text](strategy)" optype="continuous" dataType="double">
+            <Apply function="*">
+                <Constant>4.1305128855789457</Constant>
+                <TextIndex textField="lowercase(text)">
+                    <Extension value="shopping"/>
+                    <Constant>strategy</Constant>
+                </TextIndex>
+            </Apply>
+        </DerivedField>
+        <DerivedField name="tfidf@[text](team)" optype="continuous" dataType="double">
+            <Apply function="*">
+                <Constant>3.8791984572980396</Constant>
+                <TextIndex textField="lowercase(text)">
+                    <Extension value="client"/>
+                    <Constant>team</Constant>
+                </TextIndex>
+            </Apply>
+        </DerivedField>
+        <DerivedField name="tfidf@[text](weekend)" optype="continuous" dataType="double">
+            <Apply function="*">
+                <Constant>3.7346172284869317</Constant>
+                <TextIndex textField="lowercase(text)">
+                    <Extension value="presentation"/>
+                    <Constant>weekend</Constant>
+                </TextIndex>
+            </Apply>
+        </DerivedField>
+    </TransformationDictionary>
+    <RegressionModel modelName="LinearSVC" functionName="classification" normalizationMethod="logit">
+        <MiningSchema>
+            <MiningField name="text" usageType="active" optype="categorical"/>
+            <MiningField name="['private' 'work']" usageType="target" optype="categorical"/>
+        </MiningSchema>
+        <Output>
+            <OutputField name="probability_0" optype="continuous" dataType="double" feature="probability" value="0"/>
+            <OutputField name="probability_1" optype="continuous" dataType="double" feature="probability" value="1"/>
+            <OutputField name="['predicted_private' 'predicted_work']" optype="categorical" dataType="integer" feature="predictedValue"/>
+        </Output>
+        <RegressionTable intercept="-0.0351387021098210" targetCategory="1">
+            <NumericPredictor name="tfidf@[text](annual)" exponent="1" coefficient="0.5907660269009555"/>
+            <NumericPredictor name="tfidf@[text](appointment)" exponent="1" coefficient="-0.6714365514947505"/>
+            <NumericPredictor name="tfidf@[text](birthday)" exponent="1" coefficient="-0.6434050986789457"/>
+            <NumericPredictor name="tfidf@[text](book)" exponent="1" coefficient="-0.9255281324993264"/>
+            <NumericPredictor name="tfidf@[text](budget)" exponent="1" coefficient="0.5684952509279042"/>
+            <NumericPredictor name="tfidf@[text](car)" exponent="1" coefficient="-1.2393928291518324"/>
+            <NumericPredictor name="tfidf@[text](cleaning)" exponent="1" coefficient="-0.6723691284141751"/>
+            <NumericPredictor name="tfidf@[text](client)" exponent="1" coefficient="0.7221939049840121"/>
+            <NumericPredictor name="tfidf@[text](club)" exponent="1" coefficient="-0.9255281324993264"/>
+            <NumericPredictor name="tfidf@[text](deadline)" exponent="1" coefficient="0.7186460062063964"/>
+            <NumericPredictor name="tfidf@[text](dentist)" exponent="1" coefficient="-0.6714365514947505"/>
+            <NumericPredictor name="tfidf@[text](dinner)" exponent="1" coefficient="-0.6717644183001951"/>
+            <NumericPredictor name="tfidf@[text](family)" exponent="1" coefficient="-0.6717644183001951"/>
+            <NumericPredictor name="tfidf@[text](gardening)" exponent="1" coefficient="-0.9526528067809987"/>
+            <NumericPredictor name="tfidf@[text](getaway)" exponent="1" coefficient="-0.6528115829096754"/>
+            <NumericPredictor name="tfidf@[text](grocery)" exponent="1" coefficient="-0.6740466003016490"/>
+            <NumericPredictor name="tfidf@[text](gym)" exponent="1" coefficient="-0.6731604964565833"/>
+            <NumericPredictor name="tfidf@[text](house)" exponent="1" coefficient="-0.6723691284141751"/>
+            <NumericPredictor name="tfidf@[text](launch)" exponent="1" coefficient="0.9111263938548995"/>
+            <NumericPredictor name="tfidf@[text](maintenance)" exponent="1" coefficient="0.0024848635300877"/>
+            <NumericPredictor name="tfidf@[text](marketing)" exponent="1" coefficient="0.6454595036169487"/>
+            <NumericPredictor name="tfidf@[text](meeting)" exponent="1" coefficient="0.4555623806844179"/>
+            <NumericPredictor name="tfidf@[text](network)" exponent="1" coefficient="1.2993659406086966"/>
+            <NumericPredictor name="tfidf@[text](party)" exponent="1" coefficient="-0.6434050986789457"/>
+            <NumericPredictor name="tfidf@[text](performance)" exponent="1" coefficient="0.5563189538724808"/>
+            <NumericPredictor name="tfidf@[text](planning)" exponent="1" coefficient="-0.3009160794795793"/>
+            <NumericPredictor name="tfidf@[text](preparation)" exponent="1" coefficient="0.5907660269009555"/>
+            <NumericPredictor name="tfidf@[text](presentation)" exponent="1" coefficient="0.7221939049840121"/>
+            <NumericPredictor name="tfidf@[text](product)" exponent="1" coefficient="0.9111263938548995"/>
+            <NumericPredictor name="tfidf@[text](project)" exponent="1" coefficient="0.7186460062063964"/>
+            <NumericPredictor name="tfidf@[text](report)" exponent="1" coefficient="0.5907660269009555"/>
+            <NumericPredictor name="tfidf@[text](review)" exponent="1" coefficient="0.9300132935595897"/>
+            <NumericPredictor name="tfidf@[text](sales)" exponent="1" coefficient="1.0244668348517967"/>
+            <NumericPredictor name="tfidf@[text](session)" exponent="1" coefficient="-0.6731604964565833"/>
+            <NumericPredictor name="tfidf@[text](shopping)" exponent="1" coefficient="-0.6740466003016490"/>
+            <NumericPredictor name="tfidf@[text](strategy)" exponent="1" coefficient="0.6454595036169487"/>
+            <NumericPredictor name="tfidf@[text](team)" exponent="1" coefficient="0.9343077895038296"/>
+            <NumericPredictor name="tfidf@[text](weekend)" exponent="1" coefficient="-0.6528115829096754"/>
+        </RegressionTable>
+        <RegressionTable intercept="0.0" targetCategory="0"/>
+    </RegressionModel>
+</PMML>

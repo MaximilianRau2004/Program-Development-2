@@ -1,0 +1,28 @@
+.input-group {
+  margin-bottom: 20px;
+}
+
+.input-group label {
+  display: block;
+  margin-bottom: 8px;
+  font-size: 14px;
+  color: #ffffff;
+}
+
+.input-group input,
+.input-group select {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 14px;
+  color: #ffffff;
+  background-color: #000000;
+}
+
+.input-group input:focus,
+.input-group select:focus {
+  border-color: #1476ae;
+  outline: none;
+  box-shadow: 0 0 4px rgba(66, 185, 131, 0.2);
+}

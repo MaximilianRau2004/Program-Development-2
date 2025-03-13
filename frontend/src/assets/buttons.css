@@ -1,0 +1,110 @@
+.update-button,
+.delete-button,
+.cancel-button,
+.download-button {
+  padding: 7px 14px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+.update-button {
+  background-color: #42b983;
+  color: white;
+  transition: background-color 0.3s ease;
+}
+
+.update-button:hover {
+  background-color: #62b091;
+}
+
+.cancel-button,
+.delete-button {
+  background-color: #f44336;
+  color: white;
+  transition: background-color 0.3s ease;
+}
+
+.cancel-button:hover,
+.delete-button:hover {
+  background-color: #d32f2f;
+}
+
+.download-button {
+  background-color: #1476ae;
+  color: white;
+  transition: background-color 0.3s ease;
+}
+
+.download-button:hover {
+  background-color: #5f97b8;
+}
+
+@media (max-width: 600px) {
+  .container {
+    padding: 12px;
+    max-width: 90%;
+  }
+
+  .cancel-button,
+  .create-button,
+  .delete-button,
+  .download-button {
+    font-size: 13px;
+    padding: 6px 12px;
+    width: 100%;
+    margin: 5px 0;
+  }
+
+  .search-container {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}
+
+.button-group {
+  padding: 8px 12px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 10px;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.create-button {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 16px;
+  background-color: #1476ae;
+  color: white;
+  transition: background-color 0.3s ease;
+}
+
+.update-button:hover {
+  background-color: #62b091;
+}
+
+.sort-buttons {
+  margin-bottom: 20px;
+  display: flex;
+  align-items: center;
+}
+
+.sort-buttons label {
+  margin-right: 10px;
+}
+
+.sort-buttons select {
+  padding: 6px;
+  margin-right: 20px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 14px;
+}
+
+.sort-buttons Button {
+  margin-left: 20px;
+}

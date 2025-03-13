@@ -1,0 +1,36 @@
+POST http://localhost:8080/api/v1/assignees
+Content-Type: application/json
+
+{
+"prename": "Ana Cristina",
+"name": "Franco da Silva",
+"email": "ana-cristina.franco-da-silva@uni-stuttgart.de"
+}
+###
+
+POST http://localhost:8080/api/v1/todos
+Content-Type: application/json
+
+{
+"title": "A shorter title",
+"description": "A potentially longer description",
+"assigneeIdList": []
+}
+###
+
+GET http://localhost:8080/api/v1/csv-downloads/todos
+###
+GET http://localhost:8080/api/v1/assignees
+###
+PUT http://localhost:8080/api/v1/todos/2
+Content-Type: application/json
+
+{
+    "title": "A shorter title",
+    "description": "A potentially longer description",
+    "assigneeIdList": [],
+    "finished": false,
+    "dueDate": 1633940572720
+}
+###
+DELETE http://localhost:8080/api/v1/assignees/1 

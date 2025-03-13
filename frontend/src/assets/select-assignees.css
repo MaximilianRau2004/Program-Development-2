@@ -1,0 +1,97 @@
+.checkbox-group {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 15px;
+}
+
+.checkbox-group label {
+  margin-bottom: 5px;
+  font-size: 14px;
+  color: #ffffff;
+}
+
+.checkbox-group input[type="checkbox"] {
+  width: 16px;
+  height: 16px;
+  cursor: pointer;
+}
+
+.selected-assignees {
+  margin-bottom: 15px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.selected-assignee {
+  background-color: #1476ae;
+  color: white;
+  padding: 5px 10px;
+  border-radius: 16px;
+  display: flex;
+  align-items: center;
+}
+
+.remove-btn {
+  background: none;
+  border: none;
+  color: white;
+  font-weight: bold;
+  margin-left: 8px;
+  cursor: pointer;
+}
+
+.remove-btn:hover {
+  color: #ff6b6b;
+}
+
+.dropdown {
+  position: relative;
+}
+
+.dropdown-label {
+  display: block;
+  padding: 10px;
+  background-color: #000000;
+  color: #fff;
+  border: 1px solid #fff;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.dropdown-menu {
+  background-color: #000000;
+  border: 1px solid #fff;
+  padding: 10px;
+  margin-top: 5px;
+  border-radius: 4px;
+  position: absolute;
+  width: 100%;
+  max-height: 200px;
+  overflow-y: auto;
+  z-index: 10;
+  transition: all 0.3s ease;
+}
+
+.dropdown-search {
+  width: 100%;
+  padding: 8px;
+  margin-bottom: 8px;
+  border: 1px solid #000000;
+  border-radius: 4px;
+  background-color: #121212;
+  color: white;
+}
+
+.dropdown-item {
+  margin: 5px 0;
+}
+
+.dropdown-item label {
+  cursor: pointer;
+  color: white;
+}
+
+.dropdown-item input {
+  margin-right: 8px;
+}
