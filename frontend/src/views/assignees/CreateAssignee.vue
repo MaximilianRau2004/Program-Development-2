@@ -19,7 +19,6 @@ const prename = ref('')
 const name = ref('')
 const email = ref('')
 
-// error message for validation
 const errorMessage = ref('')
 
 /**

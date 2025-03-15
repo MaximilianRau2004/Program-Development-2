@@ -82,8 +82,6 @@ function updateTodo(event: Event) {
   event.preventDefault()
   errorMessage.value = ''
 
-  const dueTimestamp = new Date(dueDate.value).getTime()
-
   // PUT request to update the todo
   fetch(`${config.apiBaseUrl}/todos/${id}`, {
     method: 'PUT',
@@ -93,7 +91,7 @@ function updateTodo(event: Event) {
       description: description.value,
       finished: finished.value,
       assigneeIdList: assigneeListSelect.value,
-      dueDate: dueTimestamp
+      dueDate: dueDate.value
     })
   })
     .then((response) => {

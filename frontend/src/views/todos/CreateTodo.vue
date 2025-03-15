@@ -55,7 +55,6 @@ onMounted(() => {
  */
 function createTodo() {
   errorMessage.value = ''
-  const dueTimestamp = new Date(dueDate.value).getTime()
 
   fetch(`${config.apiBaseUrl}/todos`, {
     method: 'POST',
@@ -65,7 +64,7 @@ function createTodo() {
       description: description.value,
       finished: finished.value,
       assigneeIdList: assigneeListSelect.value,
-      dueDate: dueTimestamp
+      dueDate: dueDate.value
     })
   })
     .then((response) => {

@@ -75,15 +75,6 @@ function deleteTodo(id: number) {
 }
 
 /**
- * format date from string to long
- * @param dateString - The date string to format
- */
-function formatDate(dateString: string): string {
-  const options: Intl.DateTimeFormatOptions = { year: 'numeric', month: 'long', day: 'numeric' }
-  return new Date(dateString).toLocaleDateString('de-DE', options)
-}
-
-/**
  * navigate to update view
  * @param id - The ID of the todo to update
  */
@@ -119,7 +110,6 @@ function navigateToUpdate(id: number) {
     })
 }
 
-
 const isCompletedVisible = ref(false)
 
 /**
@@ -142,6 +132,11 @@ async function downloadCSV() {
   } catch (error) {
     showToast(new Toast('Error', 'CSV Download fehlgeschlagen!', 'error', faXmark, 10))
   }
+}
+
+function formatDate(inputDate: string): string {
+    const [year, month, day] = inputDate.split("-");
+    return `${day}.${month}.${year}`;
 }
 
 /**
