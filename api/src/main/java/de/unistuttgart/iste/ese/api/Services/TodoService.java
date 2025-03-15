@@ -1,13 +1,12 @@
 package de.unistuttgart.iste.ese.api.Services;
 
-import de.unistuttgart.iste.ese.api.DTOs.GetTodoDTO;
-import de.unistuttgart.iste.ese.api.DTOs.PostTodoDTO;
-import de.unistuttgart.iste.ese.api.DTOs.TodoDTO;
+import de.unistuttgart.iste.ese.api.DTOs.*;
 import de.unistuttgart.iste.ese.api.Models.Todo;
 import de.unistuttgart.iste.ese.api.Models.Assignee;
 import de.unistuttgart.iste.ese.api.Models.TodoModel;
 import de.unistuttgart.iste.ese.api.Repositories.TodoRepository;
 import de.unistuttgart.iste.ese.api.Repositories.AssigneeRepository;
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -38,10 +37,14 @@ public class TodoService {
      *
      * @return a list of all TODOs as GetTodoDTO
      */
-    public List<GetTodoDTO> getAllTodos() {
-        return ((List<Todo>) todoRepository.findAll()).stream()
-            .map(this::convertToGetTodoDTO)
-            .collect(Collectors.toList());
+    public List<ResponseDTO> getAllTodos() {
+        Iterable<Todo> todos = todoRepository.findAll();
+        List<ResponseDTO> todoDTOs = new ArrayList<>();
+
+        for (Todo todo : todos) {
+            todoDTOs.add(new ResponseDTO(todo));
+        }
+        return todoDTOs;
     }
 
     /**
@@ -51,9 +54,10 @@ public class TodoService {
      * @return the requested Todo as GetTodoDTO
      * @throws ResponseStatusException if the Todo with the given ID does not exist.
      */
-    public GetTodoDTO getTodoById(long id) {
-        Todo todo = findTodoById(id);
-        return convertToGetTodoDTO(todo);
+    public ResponseDTO getTodoById(Long id) {
+        Todo todo = todoRepository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, String.format("Todo with ID %s not found!", id)));
+
+        return new ResponseDTO(todo);
     }
 
     /**
@@ -92,25 +96,17 @@ public class TodoService {
      * @return the created Todo as TodoDTO
      * @throws ResponseStatusException if the title is invalid or assignees cannot be found.
      */
-    public TodoDTO createTodo(PostTodoDTO requestBody) {
+    public ResponseDTO createTodo(RequestDTO requestBody) {
         validateTitle(requestBody.getTitle());
         validateDueDate(requestBody.getDueDate());
         List<Assignee> assignees = getAssignees(requestBody.getAssigneeIdList());
         String category = todoModel.predictClass(requestBody.getTitle());
 
-        Todo toDo = new Todo(
-            requestBody.getTitle(),
-            requestBody.getDescription(),
-            requestBody.isFinished(),
-            assignees,
-            new Date(),
-            requestBody.getDueDate() != null ? new Date(requestBody.getDueDate()) : null,
-            null,
-            category
-        );
+        Todo todoToSave = new Todo(requestBody, assignees, category);
+        todoToSave.setCreatedDate(new Date());
 
-        todoRepository.save(toDo);
-        return convertToTodoDTO(toDo);
+        todoRepository.save(todoToSave);
+        return new ResponseDTO(todoToSave);
     }
 
     /**
@@ -121,27 +117,29 @@ public class TodoService {
      * @return the updated Todo as GetTodoDTO
      * @throws ResponseStatusException if the Todo does not exist or the input data is invalid.
      */
-    public GetTodoDTO updateTodo(long id, PostTodoDTO requestBody) {
-        Todo existingTodo = findTodoById(id);
-        
+    public ResponseDTO updateTodo(long id, RequestDTO requestBody) {
+        Todo existingTodo = todoRepository.findById(id)
+            .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,
+                String.format("Todo with ID %s not found!", id)));
+
+        validateTitle(requestBody.getTitle());
+        validateDueDate(requestBody.getDueDate());
+
         List<Assignee> assignees = getAssignees(requestBody.getAssigneeIdList());
         String category = todoModel.predictClass(requestBody.getTitle());
 
         existingTodo.setTitle(requestBody.getTitle());
         existingTodo.setDescription(requestBody.getDescription());
         existingTodo.setAssigneeList(assignees);
-        existingTodo.setFinished(requestBody.isFinished());
-        existingTodo.setFinishedDate(requestBody.isFinished() ? new Date() : null);
         existingTodo.setCategory(category);
-        existingTodo.setDueDate(requestBody.getDueDate() != null ? new Date(requestBody.getDueDate()) : null);
-
-        validateTitle(requestBody.getTitle());
-        validateDueDate(requestBody.getDueDate());
+        existingTodo.setDueDate(requestBody.getDueDate());
         
-        todoRepository.save(existingTodo);
-        return convertToGetTodoDTO(existingTodo);
-    }
+        existingTodo.setFinished(requestBody.isFinished());
 
+        todoRepository.save(existingTodo);
+        return new ResponseDTO(existingTodo);
+    }
+    
     /**
      * Deletes a Todo by its ID.
      *
@@ -149,62 +147,10 @@ public class TodoService {
      * @throws ResponseStatusException if the Todo does not exist.
      */
     public void deleteTodoById(long id) {
-        Todo toDoToDelete = findTodoById(id);
+        Todo todoToDelete = todoRepository.findById(id)
+            .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, String.format("Todo with ID %s not found!", id)));
+
         todoRepository.deleteById(id);
-    }
-
-    /**
-     * Finds a Todo by its ID.
-     *
-     * @param id the ID of the Todo to find.
-     * @return the Todo entity.
-     * @throws ResponseStatusException if the Todo with the given ID does not exist.
-     */
-    private Todo findTodoById(long id) {
-        Todo todo = todoRepository.findById(id);
-        if (todo == null) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "ToDo nicht gefunden");
-        }
-        return todo;
-    }
-
-    /**
-     * Converts a Todo entity to a GetTodoDTO
-     *
-     * @param todo the Todo entity.
-     * @return the Todo as GetTodoDTO
-     */
-    private GetTodoDTO convertToGetTodoDTO(Todo todo) {
-        return new GetTodoDTO(
-            todo.getId(),
-            todo.getTitle(),
-            todo.getDescription(),
-            todo.isFinished(),
-            new ArrayList<>(todo.getAssigneeList()),
-            todo.getCreatedDate().getTime(),
-            todo.getDueDate() != null ? todo.getDueDate().getTime() : null,
-            todo.getFinishedDate() != null ? todo.getFinishedDate().getTime() : null,
-            todo.getCategory()
-        );
-    }
-
-    /**
-     * Converts a Todo entity to a TodoDTO
-     *
-     * @param todo the Todo entity.
-     * @return the Todo as TodoDTO
-     */
-    private TodoDTO convertToTodoDTO(Todo todo) {
-        return new TodoDTO(
-            todo.getId(),
-            todo.getTitle(),
-            todo.getDescription(),
-            todo.isFinished(),
-            todo.getAssigneeList(),
-            todo.getCreatedDate().getTime(),
-            todo.getDueDate() != null ? todo.getDueDate().getTime() : null,
-            todo.getCategory()
-        );
     }
 
     /**
@@ -222,7 +168,7 @@ public class TodoService {
         }
         return assigneeIds.stream()
             .map(id -> assigneeRepository.findById(id).orElseThrow(() ->
-                new ResponseStatusException(HttpStatus.BAD_REQUEST, "Assignee nnicht gefunden")))
+                new ResponseStatusException(HttpStatus.BAD_REQUEST, "Assignee nicht gefunden")))
             .collect(Collectors.toList());
     }
 
@@ -244,13 +190,12 @@ public class TodoService {
      * @param dueDate the dueDate to validate.
      * @throws ResponseStatusException if the dueDate is null or not in the future.
      */
-    private void validateDueDate(Long dueDate) {
+    private void validateDueDate(Date dueDate) {
         if (dueDate == null) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Fälligkeitsdatum muss angegeben werden");
         }
 
-        long currentTimestamp = System.currentTimeMillis();
-        if (dueDate <= currentTimestamp) {
+        if (dueDate.before(new Date())) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Fälligkeitsdatum muss in der Zukunft liegen");
         }
     }

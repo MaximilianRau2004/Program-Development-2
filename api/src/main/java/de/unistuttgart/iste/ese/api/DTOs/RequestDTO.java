@@ -1,36 +1,28 @@
 package de.unistuttgart.iste.ese.api.DTOs;
 
-import de.unistuttgart.iste.ese.api.Models.Assignee;
-
+import java.util.Date;
 import java.util.List;
 
-public class TodoDTO {
-    private Long id;
+public class RequestDTO {
     private String title;
     private String description;
     private boolean finished;
-    private List<Assignee> assigneeList;
-    private Long createdDate;
-    private Long dueDate;
+    private List<Long> assigneeIdList;
+    private Date createdDate;
+    private Date dueDate;
+    private Date finishedDate;
     private String category;
 
-    public TodoDTO(Long id, String title, String description, boolean finished, List<Assignee> assigneeList, Long createdDate, Long dueDate, String category) {
-        this.id = id;
+    public RequestDTO(String title, String description, Boolean finished, List<Long> assigneeIdList, Date createdDate, Date dueDate) {
         this.title = title;
         this.description = description;
         this.finished = finished;
-        this.assigneeList = assigneeList;
+        this.assigneeIdList = assigneeIdList;
         this.createdDate = createdDate;
         this.dueDate = dueDate;
-        this.category = category;
     }
 
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
+    public RequestDTO() {
     }
 
     public String getTitle() {
@@ -54,31 +46,42 @@ public class TodoDTO {
     }
 
     public void setFinished(boolean finished) {
+        if (finished) {
+            finishedDate = new Date();
+        }
         this.finished = finished;
     }
 
-    public List<Assignee> getAssigneeList() {
-        return assigneeList;
+    public List<Long> getAssigneeIdList() {
+        return assigneeIdList;
     }
 
-    public void setAssigneeList(List<Assignee> assigneeList) {
-        this.assigneeList = assigneeList;
+    public void setAssigneeIdList(List<Long> assigneeIdList) {
+        this.assigneeIdList = assigneeIdList;
     }
 
-    public Long getCreatedDate() {
+    public Date getCreatedDate() {
         return createdDate;
     }
 
-    public void setCreatedDate(Long createdDate) {
+    public void setCreatedDate(Date createdDate) {
         this.createdDate = createdDate;
     }
 
-    public Long getDueDate() {
+    public Date getDueDate() {
         return dueDate;
     }
 
-    public void setDueDate(Long dueDate) {
+    public void setDueDate(Date dueDate) {
         this.dueDate = dueDate;
+    }
+
+    public Date getFinishedDate() {
+        return finishedDate;
+    }
+
+    public void setFinishedDate(Date finishedDate) {
+        this.finishedDate = finishedDate;
     }
 
     public String getCategory() {

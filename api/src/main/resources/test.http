@@ -14,23 +14,24 @@ Content-Type: application/json
 {
 "title": "A shorter title",
 "description": "A potentially longer description",
-"assigneeIdList": []
+"assigneeIdList": [],
+"dueDate": "2025-06-01"
 }
 ###
 
 GET http://localhost:8080/api/v1/csv-downloads/todos
 ###
-GET http://localhost:8080/api/v1/assignees
+GET http://localhost:8080/api/v1/todos
 ###
-PUT http://localhost:8080/api/v1/todos/2
+PUT http://localhost:8080/api/v1/todos/1
 Content-Type: application/json
 
 {
     "title": "A shorter title",
     "description": "A potentially longer description",
     "assigneeIdList": [],
-    "finished": false,
-    "dueDate": 1633940572720
+    "finished": true,
+    "dueDate": "2025-06-01"
 }
 ###
-DELETE http://localhost:8080/api/v1/assignees/1 
+DELETE http://localhost:8080/api/v1/todos/1 

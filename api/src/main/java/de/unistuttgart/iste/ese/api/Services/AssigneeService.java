@@ -4,6 +4,7 @@ import de.unistuttgart.iste.ese.api.Models.Assignee;
 import de.unistuttgart.iste.ese.api.Models.Todo;
 import de.unistuttgart.iste.ese.api.Repositories.AssigneeRepository;
 import de.unistuttgart.iste.ese.api.Repositories.TodoRepository;
+import jakarta.persistence.EntityNotFoundException;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;

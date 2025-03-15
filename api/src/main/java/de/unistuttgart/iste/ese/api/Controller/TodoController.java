@@ -1,9 +1,7 @@
 package de.unistuttgart.iste.ese.api.Controller;
 
 import de.unistuttgart.iste.ese.api.ApiVersion1;
-import de.unistuttgart.iste.ese.api.DTOs.GetTodoDTO;
-import de.unistuttgart.iste.ese.api.DTOs.PostTodoDTO;
-import de.unistuttgart.iste.ese.api.DTOs.TodoDTO;
+import de.unistuttgart.iste.ese.api.DTOs.*;
 import de.unistuttgart.iste.ese.api.Services.TodoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
@@ -27,7 +25,7 @@ public class TodoController {
      * @return a list of all todos as {@link GetTodoDTO}.
      */
     @GetMapping("/todos")
-    public List<GetTodoDTO> getTodos() {
+    public List<ResponseDTO> getTodos() {
         return toDoService.getAllTodos();
     }
 
@@ -38,7 +36,7 @@ public class TodoController {
      * @return the todo as GetTodoDTO
      */
     @GetMapping("/todos/{id}")
-    public GetTodoDTO getTodo(@PathVariable("id") long id) {
+    public ResponseDTO getTodo(@PathVariable("id") long id) {
         return toDoService.getTodoById(id);
     }
 
@@ -77,7 +75,7 @@ public class TodoController {
      */
     @PostMapping("/todos")
     @ResponseStatus(HttpStatus.CREATED)
-    public TodoDTO createTodo(@RequestBody PostTodoDTO requestBody) {
+    public ResponseDTO createTodo(@RequestBody RequestDTO requestBody) {
         return toDoService.createTodo(requestBody);
     }
 
@@ -89,7 +87,7 @@ public class TodoController {
      * @return the updated todo as GetTodoDTO
      */
     @PutMapping("/todos/{id}")
-    public GetTodoDTO updateTodo(@PathVariable("id") long id, @RequestBody PostTodoDTO requestBody) {
+    public ResponseDTO updateTodo(@PathVariable("id") long id, @RequestBody RequestDTO requestBody) {
         return toDoService.updateTodo(id, requestBody);
     }
 

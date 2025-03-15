@@ -1,5 +1,6 @@
 package de.unistuttgart.iste.ese.api.Models;
 
+import de.unistuttgart.iste.ese.api.DTOs.RequestDTO;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -43,7 +44,8 @@ public class Todo {
     private String category;
 
 
-    public Todo(String title, String description, Boolean finished, List<Assignee> assigneeList, Date createdDate, Date dueDate, Date finishedDate, String category) {
+    public Todo(Long id, String title, String description, Boolean finished, List<Assignee> assigneeList, Date createdDate, Date dueDate, Date finishedDate, String category) {
+        this.id = id;
         this.title = title;
         this.description = description;
         this.finished = finished;
@@ -53,6 +55,18 @@ public class Todo {
         this.finishedDate = finishedDate;
         this.category = category;
     }
+
+    public Todo(RequestDTO dto, List<Assignee> assigneeList, String category) {
+        this.title = dto.getTitle();
+        this.description = dto.getDescription();
+        this.finished = dto.isFinished();
+        this.assigneeList = assigneeList;
+        this.createdDate = new Date();
+        this.dueDate = dto.getDueDate();
+        this.finishedDate = dto.isFinished() ? new Date() : null;
+        this.category = category;
+    }
+    
 
     public Todo() {
     }
@@ -80,6 +94,8 @@ public class Todo {
     public void setFinished(boolean finished) {
         if (finished) {
             this.setFinishedDate(new Date());
+        } else {
+            this.setFinishedDate(null);
         }
         this.finished = finished;
     }
@@ -103,6 +119,8 @@ public class Todo {
     public Date getCreatedDate() {
         return createdDate;
     }
+    
+    public void setCreatedDate(Date createdDate) {}
 
     public Date getDueDate() {
         return dueDate;
