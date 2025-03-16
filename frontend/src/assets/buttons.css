@@ -16,12 +16,12 @@
 }
 
 .update-button:hover {
-  background-color: #62b091;
+  background-color: #60b190;
 }
 
 .cancel-button,
 .delete-button {
-  background-color: #f44336;
+  background-color: #eb4438;
   color: white;
   transition: background-color 0.3s ease;
 }

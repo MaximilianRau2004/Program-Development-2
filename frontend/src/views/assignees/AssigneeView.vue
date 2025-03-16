@@ -13,23 +13,25 @@ import type { Assignee } from '../../ts/Assignee'
 import '@/assets/buttons.css'
 import '@/assets/table.css'
 import { fetchAllAssignees } from '../../ts/Assignee'
+import { faTrash, faInfoCircle } from '@fortawesome/free-solid-svg-icons'
 
 const router = useRouter()
 const assignees = ref<Assignee[]>([])
-const searchId = ref('')
+const searchPrename = ref('')
 
 /**
- * Filter assignee by id
+ * Filter assignees by name
  */
-const filterAssignees = computed(() => {
-  if (!searchId.value) {
+ const filterAssignees = computed(() => {
+  if (!searchPrename.value) {
     return assignees.value
   }
-  const id = Number(searchId.value)
-  if (isNaN(id)) {
-    return []
-  }
-  return assignees.value.filter((assignee) => assignee.id === id)
+  
+  const searchTerm = searchPrename.value.toLowerCase()
+
+  return assignees.value.filter((assignee) => 
+    assignee.prename.toLowerCase().includes(searchTerm)
+  )
 })
 
 /**
@@ -74,30 +76,86 @@ onMounted(() => {
   <h1>Assignee Manager</h1>
 
   <!-- search field -->
-  <div class="search-container">
-    <input type="text" v-model="searchId" placeholder="Suche nach ID" />
+  <div class="flex-grow-1">
+    <input
+      type="text"
+      v-model="searchPrename"
+      class="form-control bg-dark text-light border-secondary search-input"
+      placeholder="Suche nach Name..."
+    />
   </div>
 
-  <!-- table for assignees -->
-  <table v-if="filterAssignees.length > 0" class="table">
-    <thead>
-      <tr>
-        <th>ID</th>
-        <th>Vorname</th>
-        <th>Nachname</th>
-        <th>E-mail</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr v-for="assignee in filterAssignees" :key="assignee.id">
-        <td>{{ assignee.id }}</td>
-        <td>{{ assignee.prename }}</td>
-        <td>{{ assignee.name }}</td>
-        <td>{{ assignee.email }}</td>
-        <Button @click="navigateToUpdate(assignee.id)" class="update-button">Bearbeiten</Button>
-        <Button @click="deleteAssignee(assignee.id)" class="delete-button">Löschen</Button>
-      </tr>
-    </tbody>
-  </table>
-  <Alert v-else> Keine Assignees gefunden... </Alert>
+  <h2 class="text-light mb-3">Assignees</h2>
+  <div class="assignee-list">
+      <div v-if="filterAssignees.length > 0" class="row row-cols-1 row-cols-md-4 row-cols-lg-5 g-2">
+        <div v-for="assignee in filterAssignees" :key="assignee.id" class="col card-column">
+          <div class="card bg-dark text-light h-100 border-secondary">
+            <div class="card-body d-flex flex-column">
+              <h5 class="card-title">Name: {{ assignee.prename }}</h5>
+              <div class="d-flex gap-2 mt-3">
+                <button @click="navigateToUpdate(assignee.id)" class="btn btn-info text-white">
+                  <font-awesome-icon :icon="faInfoCircle" /> Details
+                </button>
+                <button @click="deleteAssignee(assignee.id)" class="btn btn-danger">
+                  <font-awesome-icon :icon="faTrash" /> Löschen
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <p v-else class="text">Keine offenen Todos gefunden...</p>
+    </div>
 </template>
+
+<style scoped>
+.btn {
+  transition: all 0.2s ease;
+}
+.btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+.card {
+  transition: all 0.3s ease;
+}
+.card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+}
+
+.btn-primary {
+  width: 10%;
+}
+
+.card-column {
+  width: 100%;
+  padding-right: 8px;
+  padding-left: 8px;
+}
+
+/* Responsive adjustments */
+@media (min-width: 768px) {
+  .row-cols-md-4 > .card-column {
+    width: 25%;
+  }
+}
+
+@media (min-width: 992px) {
+  .row-cols-lg-5 > .card-column {
+    width: 20%;
+  }
+}
+
+/* Remove the unnecessary gap between cards */
+.row {
+  margin-right: -8px;
+  margin-left: -8px;
+}
+
+.search-input::placeholder {
+  color: rgba(255, 255, 255, 0.5) !important;
+  opacity: 1;
+}
+
+</style>

@@ -1,7 +1,7 @@
 <script setup lang="ts">
 /**
- * This component displays a list of todos and provides functionalities to delete, update by navigating to  the update view
- * It also includes functions to format dates, toggle the finished status of todos and donwload a CSV file of the todos.
+ * This component displays a list of todos and provides functionalities to delete, update by navigating to the update view
+ * It also includes functions to format dates, toggle the finished status of todos and download a CSV file of the todos.
  */
 
 import { Button } from 'agnostic-vue'
@@ -16,6 +16,7 @@ import '@/assets/buttons.css'
 import '@/assets/table.css'
 import { fetchAllAssignees } from '../../ts/Assignee'
 import { fetchAllTodos } from '../../ts/Todo'
+import { faTrash, faInfoCircle } from '@fortawesome/free-solid-svg-icons'
 
 // properties
 const router = useRouter()
@@ -153,103 +154,145 @@ onMounted(() => {
   })
 })
 </script>
-
 <template>
-  <h1>Todo Manager</h1>
-  <!-- Sort select -->
-  <div class="sort-buttons">
-    <label for="sortByCategory">Sortiere nach:</label>
-    <select id="sortByCategory" v-model="sortByCategory">
-      <option value="title">Titel</option>
-      <option value="dueDate">Fälligkeitsdatum</option>
-    </select>
+  <div class="container-fluid mt-4 px-4">
+    <h1 class="text-light mb-4">Todo Manager</h1>
 
-    <label for="sortOrder">Sortierung:</label>
-    <select id="sortOrder" v-model="sortOrder">
-      <option value="asc">Aufsteigend</option>
-      <option value="desc">Absteigend</option>
-    </select>
+    <div class="p-3 mb-4 rounded" style="background-color: #1e1e1e;">
+      <div class="d-flex flex-wrap gap-3 align-items-center">
+        <div class="d-flex align-items-center">
+          <select v-model="sortByCategory" class="form-select bg-dark text-light border-secondary me-2">
+            <option value="title">Titel</option>
+            <option value="dueDate">Fälligkeitsdatum</option>
+          </select>
+          
+          <select v-model="sortOrder" class="form-select bg-dark text-light border-secondary">
+            <option value="asc">Aufsteigend</option>
+            <option value="desc">Absteigend</option>
+          </select>
+        </div>
+        
+        <div class="flex-grow-1">
+          <input type="text" v-model="searchTitle" class="form-control bg-dark text-light border-secondary search-input" 
+            placeholder="Suche nach Titel..." />
+        </div>
+        
+        <button @click="isCompletedVisible = !isCompletedVisible" 
+          class="btn px-3 py-2" 
+          :class="isCompletedVisible ? 'btn-warning' : 'btn-info'">
+          {{ isCompletedVisible ? 'Verstecke beendete Todos' : 'Zeige beendete Todos' }}
+        </button>
+        
+        <button @click="downloadCSV" class="btn btn-success px-3 py-2">
+          Download als CSV
+        </button>
+      </div>
+    </div>
 
-    <Button @click="isCompletedVisible = !isCompletedVisible" class="download-button">
-      {{ isCompletedVisible ? 'Verstecke beendete Todos' : 'Zeige beendete Todos' }}
-    </Button>
-    <Button @click="downloadCSV" class="download-button">Download als CSV</Button>
-  </div>
+    <!-- Offene Todos -->
+    <h2 class="text-light mb-3">Offene Todos</h2>
+    <div class="todo-list">
+      <div v-if="filterOpenTodos.length > 0" class="row row-cols-1 row-cols-md-4 row-cols-lg-5 g-2">
+        <div v-for="todo in filterOpenTodos" :key="todo.id" class="col card-column">
+          <div class="card bg-dark text-light h-100 border-secondary">
+            <div class="card-body d-flex flex-column">
+              <h5 class="card-title"> Titel: {{ todo.title }}</h5>
+              <p class="card-text mb-auto">Fällig am: {{ formatDate(todo.dueDate) }}</p>
+              <div class="d-flex gap-2 mt-3">
+                <button @click="navigateToUpdate(todo.id)" class="btn btn-info text-white">
+                  <font-awesome-icon :icon="faInfoCircle" /> Details
+                </button>
+                <button @click="deleteTodo(todo.id)" class="btn btn-danger">
+                  <font-awesome-icon :icon="faTrash" /> Löschen
+                </button>
+              </div>
+                <div class="form-check mt-2">
+                <input class="form-check-input" type="checkbox" :checked="todo.finished" @change="setFinished(todo)" id="flexCheckDefault">
+                <label class="form-check-label" for="flexCheckDefault">
+                  Fertig
+                </label>
+                </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <p v-else class="text">Keine offenen Todos gefunden...</p>
+    </div>
 
-  <!-- search field -->
-  <div class="search-container">
-    <input type="text" v-model="searchTitle" placeholder="Suche nach Titel" />
-  </div>
-
-  <!-- container for open todos -->
-  <h2>Offene Todos</h2>
-  <table v-if="filterOpenTodos.length > 0" class="table">
-    <thead>
-      <tr>
-        <th>Titel</th>
-        <th>Beschreibung</th>
-        <th>zugewiesene Assignees</th>
-        <th>Erstellungsdatum</th>
-        <th>Fälligkeitsdatum</th>
-        <th>Beendet?</th>
-        <th>Kategorie</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr v-for="todo in filterOpenTodos" :key="todo.id">
-        <td>{{ todo.title }}</td>
-        <td>{{ todo.description }}</td>
-        <td>
-          <span v-for="assignee in todo.assigneeList" :key="assignee.id">
-            {{ assignee.prename }} {{ assignee.name }}
-          </span>
-        </td>
-        <td>{{ formatDate(todo.createdDate) }}</td>
-        <td>{{ formatDate(todo.dueDate) }}</td>
-        <td>
-          <input type="checkbox" :checked="todo.finished" @change="setFinished(todo)" />
-        </td>
-        <td>{{ todo.category }}</td>
-        <Button @click="navigateToUpdate(todo.id)" class="update-button">Bearbeiten</Button>
-        <Button @click="deleteTodo(todo.id)" class="delete-button">Löschen</Button>
-      </tr>
-    </tbody>
-  </table>
-  <Alert v-else> Keine offenen Todos gefunden... </Alert>
-
-  <!-- container for finished todos-->
-  <div v-if="isCompletedVisible">
-    <h2>Beendete Todos</h2>
-    <table v-if="filterFinishedTodos.length > 0" class="table">
-      <thead>
-        <tr>
-          <th>Titel</th>
-          <th>Beschreibung</th>
-          <th>zugewiesene Assignees</th>
-          <th>Erstellungsdatum</th>
-          <th>Fälligkeitsdatum</th>
-          <th>Beendet am</th>
-          <th>Kategorie</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr v-for="todo in filterFinishedTodos" :key="todo.id">
-          <td>{{ todo.title }}</td>
-          <td>{{ todo.description }}</td>
-          <td>
-            <span v-for="assignee in todo.assigneeList" :key="assignee.id">
-              {{ assignee.prename }} {{ assignee.name }}
-            </span>
-          </td>
-          <td>{{ formatDate(todo.createdDate) }}</td>
-          <td>{{ formatDate(todo.dueDate) }}</td>
-          <td>{{ formatDate(todo.finishedDate) }}</td>
-          <td>{{ todo.category }}</td>
-          <Button @click="navigateToUpdate(todo.id)" class="update-button">Bearbeiten</Button>
-          <Button @click="deleteTodo(todo.id)" class="delete-button">Löschen</Button>
-        </tr>
-      </tbody>
-    </table>
-    <Alert v-else> Keine beendeten Todos gefunden... </Alert>
+    <!-- Beendete Todos -->
+    <div v-if="isCompletedVisible" class="mt-4">
+      <h2 class="text-light mb-3">Beendete Todos</h2>
+      <div v-if="filterFinishedTodos.length > 0" class="row row-cols-1 row-cols-md-4 row-cols-lg-5 g-2">
+        <div v-for="todo in filterFinishedTodos" :key="todo.id" class="col card-column">
+          <div class="card border-success h-100" style="background-color: rgba(25, 135, 84, 0.1);">
+            <div class="card-body d-flex flex-column">
+              <h5 class="card-title text-success">{{ todo.title }}</h5>
+              <p class="card-text mb-auto text-light">Beendet am: {{ formatDate(todo.finishedDate) }}</p>
+              <div class="d-flex gap-2 mt-3">
+                <button @click="navigateToUpdate(todo.id)" class="btn btn-info text-white">
+                  <font-awesome-icon :icon="faInfoCircle" /> Details
+                </button>
+                <button @click="deleteTodo(todo.id)" class="btn btn-danger">
+                  <font-awesome-icon :icon="faTrash" /> Löschen
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <p v-else class="text">Keine beendeten Todos gefunden...</p>
+    </div>
   </div>
 </template>
+
+<style scoped>
+.btn {
+  transition: all 0.2s ease;
+}
+.btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+.card {
+  transition: all 0.3s ease;
+}
+.card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+}
+
+.btn-primary {
+  width: 10%;
+}
+
+.card-column {
+  width: 100%;
+  padding-right: 8px;
+  padding-left: 8px;
+}
+
+/* Responsive adjustments */
+@media (min-width: 768px) {
+  .row-cols-md-4 > .card-column {
+    width: 25%;
+  }
+}
+
+@media (min-width: 992px) {
+  .row-cols-lg-5 > .card-column {
+    width: 20%;
+  }
+}
+
+/* Remove the unnecessary gap between cards */
+.row {
+  margin-right: -8px;
+  margin-left: -8px;
+}
+
+.search-input::placeholder {
+  color: rgba(255, 255, 255, 0.5) !important;
+  opacity: 1;
+}
+
+</style>
