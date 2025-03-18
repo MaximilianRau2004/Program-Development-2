@@ -45,10 +45,6 @@
   color: #ff6b6b;
 }
 
-.dropdown {
-  position: relative;
-}
-
 .dropdown-label {
   display: block;
   padding: 10px;

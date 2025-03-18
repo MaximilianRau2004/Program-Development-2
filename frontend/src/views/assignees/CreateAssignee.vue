@@ -55,27 +55,45 @@ function createAssignee() {
 </script>
 
 <template>
-  <div class="container">
-    <!-- container for creating an assignee -->
-    <div class="create assignee">
-      <h2 class="assignee-header">Neuen Assignee erstellen</h2>
-      <form @submit.prevent="createAssignee">
-        <div class="input-group">
-          <label for="prename">Vorname</label>
-          <input type="text" id="prename" v-model="prename" required />
-        </div>
-        <div class="input-group">
-          <label for="name">Nachname</label>
-          <input type="text" id="name" v-model="name" required />
-        </div>
-        <div class="input-group">
-          <label for="email">Email</label>
-          <input type="email" id="email" v-model="email" required />
-        </div>
-        <Button @click="createAssignee" type="button" class="create-button"
-          >Assignee erstellen</Button
-        >
-      </form>
+  <div class="container p-4 bg-dark text-light rounded">
+    <div class="mb-3">
+      <h5 class="mb-4">Assignee erstellen</h5>
+    </div>
+    <div class="mb-4">
+      <div class="mb-3">
+        <label for="editPrename" class="form-label">Vorname</label>
+        <input
+          type="text"
+          class="form-control bg-dark text-light border-secondary w-100"
+          id="editPrename"
+          v-model="prename"
+          required
+        />
+      </div>
+      <div class="mb-3">
+        <label for="editName" class="form-label">Name</label>
+        <input
+          type="text"
+          class="form-control bg-dark text-light border-secondary w-100"
+          id="editName"
+          v-model="name"
+          required
+        />
+      </div>
+      <div class="mb-3">
+        <label for="editEmail" class="form-label">Email</label>
+        <input
+          type="email"
+          class="form-control bg-dark text-light border-secondary w-100"
+          id="editEmail"
+          v-model="email"
+          required
+        />
+      </div>
+      <!-- Add more fields here if needed -->
+    </div>
+    <div class="d-flex justify-content-end">
+      <button @click="createAssignee" type="button" class="btn btn-info">Erstellen</button>
     </div>
   </div>
 </template>
