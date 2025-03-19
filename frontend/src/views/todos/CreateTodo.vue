@@ -45,7 +45,6 @@ const errorMessage = ref('')
  */
 onMounted(() => {
   fetchAllAssignees().then((data) => {
-    console.log('Assignees:', data)
     assignees.value = data
   })
 })
@@ -77,18 +76,18 @@ function createTodo() {
       return response.json()
     })
     .then(() => {
-      showToast(new Toast('Success', `Erfolgreich Todo erstellt!`, 'success', faCheck, 5))
+      showToast(new Toast('Erfolg', `Erfolgreich Todo erstellt!`, 'success', faCheck, 5))
       router.push('/todos')
     })
     .catch((error) => {
       console.error(error)
       showToast(
         new Toast(
-          'Error',
+          'Fehler',
           `Fehler beim Erstellen des Todos: ${error.message}`,
           'error',
           faXmark,
-          10
+          5
         )
       )
     })

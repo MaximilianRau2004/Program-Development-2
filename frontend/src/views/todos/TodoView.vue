@@ -4,25 +4,18 @@
  * It also includes functions to format dates, toggle the finished status of todos and download a CSV file of the todos.
  */
 
-import { Button } from 'agnostic-vue'
 import config from '../../config'
 import { showToast, Toast } from '../../ts/toasts'
 import { faCheck, faXmark } from '@fortawesome/free-solid-svg-icons'
 import { computed, onMounted, ref, type Ref } from 'vue'
-import { useRouter } from 'vue-router'
 import type { Assignee } from '../../ts/Assignee'
 import type { TodoResponse } from '../../ts/Todo'
-import '@/assets/buttons.css'
-import '@/assets/table.css'
-import '@/assets/select-assignees.css'
-import '@/assets/input-group.css'
 import { fetchAllAssignees } from '../../ts/Assignee'
 import { fetchAllTodos, fetchTodo } from '../../ts/Todo'
 import { faTrash, faInfoCircle, faTimes } from '@fortawesome/free-solid-svg-icons'
 import { useAssigneeSelection } from '@/ts/Todo'
 
 // properties
-const router = useRouter()
 const todos: Ref<TodoResponse[]> = ref([])
 const assignees: Ref<Assignee[]> = ref([])
 const searchTitle = ref('')
@@ -93,10 +86,10 @@ function deleteTodo(id: number) {
   fetch(`${config.apiBaseUrl}/todos/${id}`, { method: 'DELETE' })
     .then(() => {
       todos.value = todos.value.filter((todo) => todo.id !== id)
-      showToast(new Toast('Alert', `Erfolgreich Todo gelöscht! `, 'success', faCheck, 5))
+      showToast(new Toast('Erfolg', `Erfolgreich Todo gelöscht! `, 'success', faCheck, 5))
     })
     .catch(() =>
-      showToast(new Toast('Error', `Fehler beim Löschen des Todos!`, 'error', faXmark, 10))
+      showToast(new Toast('Fehler', `Fehler beim Löschen des Todos!`, 'error', faXmark, 5))
     )
 }
 
@@ -165,12 +158,12 @@ function updateTodo() {
     .then((updatedTodo) => {
       // Update the todo in the list
       todos.value = todos.value.map(t => t.id === updatedTodo.id ? updatedTodo : t)
-      showToast(new Toast('Success', `Erfolgreich Todo aktualisiert!`, 'success', faCheck, 5))
+      showToast(new Toast('Erfolg', `Erfolgreich Todo aktualisiert!`, 'success', faCheck, 5))
       closeEditModal()
     })
     .catch((error) => {
       console.error('Error updating todo:', error)
-      showToast(new Toast('Error', `Fehler beim Aktualisieren des Todos: ${error.message}`, 'error', faXmark, 10))
+      showToast(new Toast('Fehler', `Fehler beim Aktualisieren des Todos: ${error.message}`, 'error', faXmark, 5))
     })
 }
 
@@ -198,7 +191,7 @@ function setFinished(todo: TodoResponse) {
     })
     .then(updated => {
       todos.value = todos.value.map(t => t.id === updated.id ? updated : t)
-      showToast(new Toast('Success', 'Todo wurde beendet!', 'success', faCheck, 5))
+      showToast(new Toast('Erfolg', 'Todo wurde beendet!', 'success', faCheck, 5))
     })
 }
 
@@ -222,7 +215,7 @@ async function downloadCSV() {
     document.body.removeChild(link)
     window.URL.revokeObjectURL(url)
   } catch (error) {
-    showToast(new Toast('Error', 'CSV Download fehlgeschlagen!', 'error', faXmark, 10))
+    showToast(new Toast('Fehler', 'CSV Download fehlgeschlagen!', 'error', faXmark, 5))
   }
 }
 
@@ -250,12 +243,13 @@ onMounted(async () => {
     assigneesList.value = assigneeData
   } catch (error) {
     console.error('Error loading data:', error)
-    showToast(new Toast('Error', 'Fehler beim Laden der Daten', 'error', faXmark, 5))
+    showToast(new Toast('Fehler', 'Fehler beim Laden der Daten', 'error', faXmark, 5))
   }
 })
 </script>
 
 <template>
+  <h2 class="text-light mb-3">Todos</h2>
   <div class="container-fluid mt-4 px-4">
     <div class="p-3 mb-4 rounded bg-dark">
       <div class="d-flex flex-wrap gap-3 align-items-center">
@@ -453,7 +447,7 @@ onMounted(async () => {
 }
 
 .form-control {
-  width: 50%;
+  width: 100%;
 }
 
 .form-select {

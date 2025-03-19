@@ -5,17 +5,13 @@
  */
 
 import { ref, onMounted, computed } from 'vue'
-import { useRouter } from 'vue-router'
 import config from '../../config'
 import { showToast, Toast } from '../../ts/toasts'
 import { faCheck, faXmark } from '@fortawesome/free-solid-svg-icons'
 import type { Assignee } from '../../ts/Assignee'
-import '@/assets/buttons.css'
-import '@/assets/table.css'
 import { fetchAllAssignees } from '../../ts/Assignee'
 import { faTrash, faInfoCircle } from '@fortawesome/free-solid-svg-icons'
 
-const router = useRouter()
 const assignees = ref<Assignee[]>([])
 const searchPrename = ref('')
 
@@ -57,10 +53,10 @@ const deleteAssignee = async (id: number) => {
   fetch(`${config.apiBaseUrl}/assignees/${id}`, { method: 'DELETE' })
     .then(() => {
       assignees.value = assignees.value.filter((assignee) => assignee.id !== id)
-      showToast(new Toast('Alert', `Erfolgreich Assignee gelöscht!`, 'success', faCheck, 5))
+      showToast(new Toast('Erfolg', `Erfolgreich Assignee gelöscht!`, 'success', faCheck, 5))
     })
     .catch(() =>
-      showToast(new Toast('Error', `Fehler beim Löschen des Assignees!`, 'error', faXmark, 10))
+      showToast(new Toast('Fehler', `Fehler beim Löschen des Assignees!`, 'error', faXmark, 5))
     )
 }
 
@@ -81,8 +77,7 @@ const openEditModal = async (id: number) => {
       throw new Error('Assignee nicht gefunden')
     }
   } catch (error) {
-    console.error('Error loading assignee details:', error)
-    showToast(new Toast('Error', 'Fehler beim Laden der Assignee-Details', 'error', faXmark, 5))
+    showToast(new Toast('Fehler', 'Fehler beim Laden der Assignees', 'error', faXmark, 5))
   }
 }
 
@@ -124,14 +119,13 @@ const updateAssignee = async () => {
       assignees.value = assignees.value.map((a) =>
         a.id === updatedAssignee.id ? updatedAssignee : a
       )
-      showToast(new Toast('Success', `Erfolgreich Assignee aktualisiert!`, 'success', faCheck, 5))
+      showToast(new Toast('Erfolg', `Erfolgreich Assignee aktualisiert!`, 'success', faCheck, 5))
       closeEditModal()
     })
     .catch((error) => {
-      console.error('Error updating assignee:', error)
       showToast(
         new Toast(
-          'Error',
+          'Fehler',
           `Fehler beim Aktualisieren des Assignees: ${error.message}`,
           'error',
           faXmark,
@@ -298,7 +292,6 @@ onMounted(() => {
   width: 50%;
 }
 
-/* Modal styles */
 .modal.show {
   background-color: rgba(0, 0, 0, 0.5);
 }

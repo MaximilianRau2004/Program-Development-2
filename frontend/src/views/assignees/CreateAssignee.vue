@@ -44,12 +44,12 @@ function createAssignee() {
       return response.json()
     })
     .then(() => {
-      showToast(new Toast('Success', `Erfolgreich Assignee erstellt!`, 'success', faCheck, 5))
+      showToast(new Toast('Erfolg', `Erfolgreich Assignee erstellt!`, 'success', faCheck, 5))
       router.push('/assignees')
     })
     .catch((error) => {
       console.error(error)
-      showToast(new Toast('Error', `Fehler beim Erstellen des Assignees: ${error.message}`, 'error', faXmark, 10))
+      showToast(new Toast('Fehler', `Fehler beim Erstellen des Assignees: ${error.message}`, 'error', faXmark, 5))
     })
 }
 </script>
